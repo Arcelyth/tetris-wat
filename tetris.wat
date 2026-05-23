@@ -111,7 +111,7 @@
   )
 
   (global $lastTime (mut f64) (f64.const 0.0))
-  (global $dropInterval (mut f64) (f64.const 200.0))
+  (global $dropInterval (mut f64) (f64.const 1000.0))
   (global $dropCounter (mut f64) (f64.const 0.0))
   (global $scores (mut i32) (i32.const 0))
   (global $lines (mut i32) (i32.const 0))
