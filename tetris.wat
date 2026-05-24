@@ -9,6 +9,8 @@
   (type $RowType (array (mut i32)))
   (type $MatrixType (array (mut (ref null $RowType)))) 
   (type $ShapesType (array (ref $MatrixType)))
+  (type $Rgb (array i32))
+  (type $Rgbs (array (ref $Rgb)))
 
   (type $Pos (struct (field $x (mut i32)) (field $y (mut i32))))
 
@@ -17,6 +19,26 @@
       (field $pos (ref $Pos)) 
       (field $matrix (mut (ref null $MatrixType)))
       (field $id (mut i32))
+    )
+  )
+
+  (global $COLORS (ref $Rgbs)
+    (array.new_fixed $Rgbs 8
+      (array.new_fixed $Rgb 3 (i32.const 0) (i32.const 0) (i32.const 0))
+      ;; I 
+      (array.new_fixed $Rgb 3 (i32.const 0) (i32.const 240) (i32.const 240))
+      ;; J
+      (array.new_fixed $Rgb 3 (i32.const 0) (i32.const 0) (i32.const 240))
+      ;; L
+      (array.new_fixed $Rgb 3 (i32.const 240) (i32.const 160) (i32.const 0))
+      ;; O
+      (array.new_fixed $Rgb 3 (i32.const 240) (i32.const 240) (i32.const 0))
+      ;; S
+      (array.new_fixed $Rgb 3 (i32.const 0) (i32.const 240) (i32.const 0))
+      ;; T
+      (array.new_fixed $Rgb 3 (i32.const 160) (i32.const 0) (i32.const 240))
+      ;; Z
+      (array.new_fixed $Rgb 3 (i32.const 240) (i32.const 0) (i32.const 0))
     )
   )
 
@@ -544,6 +566,7 @@
     (local $len_y i32) 
     (local $cur_row (ref $RowType))
     (local $val i32)
+    (local $color_arr (ref $Rgb))
 
     (local.set $ctx (call $js_getCtx))
     local.get $offset
@@ -591,10 +614,12 @@
               local.set $pixel_y
 
               ;; brick color
+              (local.set $color_arr (array.get $Rgbs (global.get $COLORS) (local.get $val)))
+
               local.get $ctx
-              (i32.mul (local.get $val) (i32.const 30))
-              (i32.mul (local.get $val) (i32.const 20))
-              (i32.mul (local.get $val) (i32.const 10))
+              (array.get $Rgb (local.get $color_arr) (i32.const 0))
+              (array.get $Rgb (local.get $color_arr) (i32.const 1))
+              (array.get $Rgb (local.get $color_arr) (i32.const 2))
               call $js_setFillColor
 
               local.get $ctx
