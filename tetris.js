@@ -8,16 +8,16 @@ const importObject = {
     draw: {
         setFillColor: (ctx, r, g, b) => ctx.fillStyle = `rgb(${r}, ${g}, ${b})`,
         fillRect: (ctx, x, y, w, h) => ctx.fillRect(x, y, w, h),
-        updateUI: (scores, lines) => {
+        updateUI: (scores, lines, level) => {
             document.getElementById("scores").innerText = scores;
             document.getElementById("lines").innerText = lines;
+            document.getElementById("level").innerText = level;
         }
     },
     tool: {
         random: () => Math.floor(Math.random() * 7),
         alert: (scores) => alert("Game Over: " + scores) 
     }
-
 }
 
 WebAssembly.instantiateStreaming(fetch("./tetris.wasm"), importObject).then((obj) => {

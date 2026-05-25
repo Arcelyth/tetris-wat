@@ -2,7 +2,7 @@
   (import "canvas" "getCtx" (func $js_getCtx (result externref)))
   (import "draw" "setFillColor" (func $js_setFillColor (param externref i32 i32 i32)))
   (import "draw" "fillRect" (func $js_fillRect (param externref i32 i32 i32 i32)))
-  (import "draw" "updateUI" (func $js_updateUI (param i32 i32)))
+  (import "draw" "updateUI" (func $js_updateUI (param i32 i32 i32)))
   (import "tool" "random" (func $js_random (result i32)))
   (import "tool" "alert" (func $js_alert (param i32)))
 
@@ -469,7 +469,7 @@
         )
       )
 
-      (call $js_updateUI (global.get $scores) (global.get $lines))
+      (call $js_updateUI (global.get $scores) (global.get $lines) (global.get $level))
     end
   )
 

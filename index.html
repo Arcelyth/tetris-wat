@@ -6,27 +6,23 @@
     <title>Document</title>
     <style>
       body {
-      }
-      canvas {
-        border: 4px solid blue;
-        background: black;
-      }
-      .info-group {
-        border: 2px solid gray;
-        padding: 10px;
-        margin-bottom: 10px;
-      }
-      .info-label {
-        font-size: 14px;
-      }
-      .info-val {
-        font-size: 24px;
-        font-weight: bold;
-        margin-top: 5px;
+        background: #202124;
+        color: #fff;
+        font-family: monospace;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        margin: 0;
       }
       .container {
         display: flex;
         gap: 20px;
+      }
+      canvas {
+        border: 4px solid #3c4043;
+        background: #000;
       }
       .panel {
         display: flex;
@@ -34,6 +30,40 @@
         justify-content: flex-start;
         font-size: 18px;
         width: 160px;
+      }
+      .info-group {
+        border: 2px solid #3c4043;
+        padding: 10px;
+        margin-bottom: 10px;
+        background: #282a2d;
+      }
+      .info-label {
+        color: #9aa0a6;
+        font-size: 14px;
+      }
+      .info-val {
+        font-size: 24px;
+        font-weight: bold;
+        color: #8ab4f8;
+        margin-top: 5px;
+      }
+      .controls-container {
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        gap: 20px;
+        font-family: sans-serif;
+      }
+      .controls {
+        font-size: 12px;
+        color: #9aa0a6;
+        line-height: 1.6;
+      }
+      kbd {
+        background: #3c4043;
+        padding: 2px 4px;
+        border-radius: 3px;
+        color: #fff;
       }
     </style>
   </head>
@@ -49,6 +79,26 @@
         <div class="info-group">
           <div class="info-label">LINES</div>
           <div id="lines" class="info-val">0</div>
+        </div>
+        <div class="info-group">
+          <div class="info-label">LEVEL</div>
+          <div id="level" class="info-val">1</div>
+        </div>
+      </div>
+
+      <div class="controls-container">
+        <div class="controls" lang="zh">
+          <strong>操作指南:</strong><br />
+          <kbd>←</kbd> <kbd>→</kbd> : 左右移动<br />
+          <kbd>↑</kbd> : 顺时针旋转<br />
+          <kbd>↓</kbd> : 软降加速<br />
+        </div>
+
+        <div class="controls" lang="en">
+          <strong>Controls:</strong><br />
+          <kbd>←</kbd> <kbd>→</kbd> : Move Left / Right<br />
+          <kbd>↑</kbd> : Rotate Clockwise<br />
+          <kbd>↓</kbd> : Soft Drop<br />
         </div>
       </div>
     </div>
