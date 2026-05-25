@@ -10,6 +10,7 @@
   (type $MatrixType (array (mut (ref null $RowType)))) 
   (type $ShapesType (array (ref $MatrixType)))
   (type $Rgb (array i32))
+  (type $Rewards (array i32))
   (type $Rgbs (array (ref $Rgb)))
 
   (type $Pos (struct (field $x (mut i32)) (field $y (mut i32))))
@@ -20,6 +21,10 @@
       (field $matrix (mut (ref null $MatrixType)))
       (field $id (mut i32))
     )
+  )
+
+  (global $REWARDS (ref $Rewards) 
+    (array.new_fixed $Rewards 5 (i32.const 0) (i32.const 100) (i32.const 300) (i32.const 500) (i32.const 800))
   )
 
   (global $COLORS (ref $Rgbs)
@@ -137,6 +142,7 @@
   (global $dropCounter (mut f64) (f64.const 0.0))
   (global $scores (mut i32) (i32.const 0))
   (global $lines (mut i32) (i32.const 0))
+  (global $level (mut i32) (i32.const 1))
   (global $gameOver (mut i32) (i32.const 0))
 
   (func $collide (result i32)
@@ -345,6 +351,10 @@
     (local $x i32) (local $y i32)
     (local $row (ref $RowType))
     (local $i i32)
+    (local $pow_res f64)
+    (local $base f64)
+    (local $exp i32)
+
 
     (local.set $map_obj (ref.as_non_null (global.get $map)))
     (local.set $row_count (i32.const 0))
@@ -413,10 +423,52 @@
     )
     (i32.gt_s (local.get $row_count) (i32.const 0))
     if 
-      (i32.add (global.get $scores) (i32.const 100))
+      
+      (i32.add (global.get $scores) 
+        (array.get $Rewards (global.get $REWARDS) (local.get $row_count))
+      )
       global.set $scores
+
       (i32.add (local.get $row_count) (global.get $lines))
       global.set $lines
+    
+      ;; level up
+      (global.set $level
+        (i32.add
+          (i32.div_s (global.get $lines) (i32.const 10))
+          (i32.const 1)
+        )
+      )
+
+      (block 
+        ;; fast exponentiation
+        (local.set $pow_res (f64.const 1.0))
+        (local.set $base (f64.const 0.85))
+        (local.set $exp (i32.sub (global.get $level) (i32.const 1))) 
+        (block $pow_brk
+          (loop $pow_lp 
+            (i32.le_s (local.get $exp) (i32.const 0))
+            br_if $pow_brk
+
+            (i32.and (local.get $exp) (i32.const 1))
+            if
+              (local.set $pow_res (f64.mul (local.get $pow_res) (local.get $base)))
+            end
+
+            (local.set $base (f64.mul (local.get $base) (local.get $base)))
+            (local.set $exp (i32.shr_u (local.get $exp) (i32.const 1)))
+            (br $pow_lp)
+          )
+        )
+
+        (global.set $dropInterval
+          (f64.max
+            (f64.const 100.0)
+            (f64.mul (f64.const 1000.0) (local.get $pow_res))
+          )
+        )
+      )
+
       (call $js_updateUI (global.get $scores) (global.get $lines))
     end
   )
