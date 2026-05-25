@@ -2,9 +2,10 @@
 
 Tetris game, but write in webassembly text format.
 
-## How to play
+[Play Online](https://arcelyth.github.io/tetris-wat/)
 
-Run:
+## Run 
+
 ```bash
 make
 ```
