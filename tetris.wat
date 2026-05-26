@@ -606,6 +606,30 @@
     f64.const 0.0 global.set $dropCounter
   )
 
+  (func $hardDrop (export "hardDrop")
+    (local $pos_obj (ref $Pos))
+
+    (local.set $pos_obj (global.get $cur) (struct.get $Cur $pos))
+    (block $br
+      (loop $lp
+        call $collide
+        br_if $br
+        local.get $pos_obj
+        (i32.add (struct.get $Pos $y (local.get $pos_obj)) (i32.const 1))
+        struct.set $Pos $y
+
+        br $lp
+      )
+    )
+    local.get $pos_obj
+    (i32.sub (struct.get $Pos $y (local.get $pos_obj)) (i32.const 1))
+    struct.set $Pos $y
+    call $fix
+    call $sweepLine
+    call $newCur
+    f64.const 0.0 global.set $dropCounter
+  )
+
   (func $drawMat (param $mat (ref $MatrixType)) (param $offset (ref $Pos))
     (local $ctx externref)
     (local $offset_x i32) 

@@ -45,6 +45,9 @@ WebAssembly.instantiateStreaming(fetch("./tetris.wasm"), importObject).then((obj
             case "ArrowDown":
               exports.drop();
               break;
+            case "Space":
+              exports.hardDrop();
+              break;
         }
     });
 })
