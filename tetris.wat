@@ -766,7 +766,10 @@
   (func $reset
     (global.set $scores (i32.const 0))
     (global.set $lines (i32.const 0))
+    (global.set $dropInterval (f64.const 1000.0))
+    (global.set $level (i32.const 1))
     (global.set $gameOver (i32.const 0))
+    (call $js_updateUI (global.get $scores) (global.get $lines) (global.get $level))
     (call $createMat (global.get $COLS) (global.get $ROWS)) 
     global.set $map
     call $newCur
@@ -777,7 +780,7 @@
 
     global.get $cur
     global.get $SHAPES
-    (array.get $ShapesType (i32.const 6))
+    (array.get $ShapesType (i32.add (i32.const 1) (call $js_random)))
     struct.set $Cur $matrix
   )
 )
